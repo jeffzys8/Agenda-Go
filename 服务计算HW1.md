@@ -1,0 +1,117 @@
+# 笔记
+
+cobra
+https://github.com/spf13/cobra#getting-started
+
+安装不成功：github clone
+https://github.com/golang/text
+
+## User信息
+
+- KEY: id int
+- username string
+- password(md5) string
+- email string
+- phone string
+
+
+## Meeting信息
+
+- KEY: title string
+- creator int //会议发起人id
+- attenders []int //会议参与者id
+- start_time Date 
+- end_time Date
+
+## Global包（全局包）
+
+> 记录全局数据 - 用户登陆状态等
+
+- log_state 登录状态
+- log_user_id 登陆用户id
+
+## 登陆状态问题
+
+在login状态中，如果程序直接运行指令了，怎么保持登陆状态？亦或是打开子进程？<br>
+**解决方案：**
+```
+持久化要求：
+使用 json 存储 User 和 Meeting 实体
+当前用户信息存储在 curUser.txt 中
+```
+
+## 目录逻辑 
+
+- cmd：存放命令实现代码
+- entity：存放 User 和 Meeting 对象读写与处理逻辑
+- log.txt：使用```log```包记录命令执行
+
+## 耦合
+
+还是需要具有耦合性的记录，以便于增删的操作
+- 在Meeting里记录参与者
+- 在User里记录参与的会议
+
+
+# 命令与参数设计
+
+## help
+
+> 显示帮助信息，系统自带
+
+## login
+
+> 执行登陆功能
+
+参数列表：
+
+- 用户名(-u --user)
+- password(-p --password)
+
+功能：
+- 若用户名或密码为空，返回提示信息
+- 若用户已登陆返回提示信息
+- 从```entity/users.txt```文件中读取用户信息，确认登陆并保存状态到```curUser.txt```
+- 若用户名或密码错误，返回提示信息
+
+## register
+
+> 执行注册功能
+
+参数列表：
+- 用户名(-u --user)
+- password(-p --password)
+
+功能：
+- 若用户名或密码为空，返回提示信息
+- 在```entity/users.txt```中检测用户名是否重复
+- 保存用户信息，自动登陆，保存登陆信息到```curUser.txt```
+
+
+## createm
+
+> 创建会议
+
+## adda
+
+> 增加会议参与者
+
+## removea
+
+> 删除会议参与者
+
+## querym
+
+> 查询某个时段的会议
+
+## cancelm
+
+> 会议发起者取消某个会议
+
+## exitm
+
+> 会议参与者退出某个会议
+
+## clearm
+
+> 会议发起者清空所有发起的会议

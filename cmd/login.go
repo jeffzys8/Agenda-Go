@@ -23,15 +23,11 @@ import (
 // loginCmd represents the login command
 var loginCmd = &cobra.Command{
 	Use:   "login",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "登陆",
+	Long: `该命令用于登陆`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("login called")
+		username, _ := cmd.Flags().GetString("user")
+		fmt.Println("login called by " + username)
 	},
 }
 
@@ -39,7 +35,7 @@ func init() {
 	rootCmd.AddCommand(loginCmd)
 
 	// Here you will define your flags and configuration settings.
-
+	loginCmd.Flags().StringP("user", "u", "Anonymous", "Help message for username")
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// loginCmd.PersistentFlags().String("foo", "", "A help for foo")
