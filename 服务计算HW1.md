@@ -35,28 +35,30 @@
 - log_state 登录状态
 - log_user_id 登陆用户id
 
-## 登陆状态问题
+## 持久化要求
 
-在login状态中，如果程序直接运行指令了，怎么保持登陆状态？亦或是打开子进程？<br>
-**解决方案：**
 ```
 持久化要求：
 使用 json 存储 User 和 Meeting 实体
 当前用户信息存储在 curUser.txt 中
 ```
+- 每次运行相关命令读取整个User/Meeting实体，并在结束时保存
+- 学习使用 io/ioutils 进行文件读写
+    - [文档](https://go-zh.org/pkg/io/ioutil/)
+    - [教程](https://blog.csdn.net/wangshubo1989/article/details/74777112/)
 
 ## 目录逻辑 
 
 - cmd：存放命令实现代码
-- entity：存放 User 和 Meeting 对象读写与处理逻辑
+- entity：存放 users 和 meetings 对象读写与处理逻辑
 - log.txt：使用```log```包记录命令执行
+- curUser.txt: 当前登陆用户的存储（**是否需要加密**）
 
 ## 耦合
 
 还是需要具有耦合性的记录，以便于增删的操作
 - 在Meeting里记录参与者
 - 在User里记录参与的会议
-
 
 
 # 命令与参数设计
