@@ -1,10 +1,15 @@
 # 笔记
 
-cobra
-https://github.com/spf13/cobra#getting-started
+## cobra
 
-安装不成功：github clone
-https://github.com/golang/text
+- [官方教程](https://github.com/spf13/cobra#getting-started)
+- [中文教程](https://www.cnblogs.com/borey/p/5715641.html)
+- 安装不成功： [clone from github](https://github.com/golang/text)
+
+
+## JSON
+
+- [参考教程](https://blog.go-zh.org/json-and-go)
 
 ## User信息
 
@@ -53,6 +58,7 @@ https://github.com/golang/text
 - 在User里记录参与的会议
 
 
+
 # 命令与参数设计
 
 ## help
@@ -87,6 +93,14 @@ https://github.com/golang/text
 - 在```entity/users.txt```中检测用户名是否重复
 - 保存用户信息，自动登陆，保存登陆信息到```curUser.txt```
 
+## logout
+
+> 执行登出操作
+
+参数列表：（空）
+
+功能：
+- 检测```curUser.txt```的登陆状态，记录保存并返回提示
 
 ## createm
 
