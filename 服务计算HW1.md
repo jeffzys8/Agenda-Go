@@ -1,5 +1,11 @@
 # 笔记
-一点小测试
+
+- [ ] cmd-entity实现接口模式
+
+## Go项目库
+
+- [链接](https://github.com/golang/go/wiki/Projects)
+
 ## cobra
 
 - [官方教程](https://github.com/spf13/cobra#getting-started)
@@ -25,17 +31,10 @@
 ## Meeting信息
 
 - KEY: title string
-- creator int //会议发起人id
-- attenders []int //会议参与者id
-- start_time Date 
-- end_time Date
-
-## Global包（全局包）
-
-> 记录全局数据 - 用户登陆状态等
-
-- log_state 登录状态
-- log_user_id 登陆用户id
+- creator string //会议发起人
+- attenders []string //会议参与者
+- start_time Time 
+- end_time Time
 
 ## 持久化要求
 

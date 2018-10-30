@@ -11,3 +11,5 @@
 [2018-10-30 14:14:15 +0800 CST] Login: Wrong password: jeff
 [2018-10-30 14:15:13 +0800 CST] Logout: jeff
 [2018-10-30 14:39:47 +0800 CST] Register: Repetition of registration: jeff
+[2018-10-30 18:06:07 +0800 CST] QueryUser: jeff queried by jeff
+[2018-10-30 18:06:10 +0800 CST] QueryUser: amber queried by jeff
