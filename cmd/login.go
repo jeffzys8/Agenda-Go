@@ -16,7 +16,7 @@ package cmd
 
 import (
 	"fmt"
-
+	"Agenda/opfile"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +27,14 @@ var loginCmd = &cobra.Command{
 	Long: `该命令用于登陆`,
 	Run: func(cmd *cobra.Command, args []string) {
 		username, _ := cmd.Flags().GetString("user")
-		fmt.Println("login called by " + username)
+		password, _ := cmd.Flags().GetString("password")
+		
+		// read the current file
+		_ , exist := opfile.GetCurrentUser()
+		if exist{
+			fmt.Println("已经登陆，无需重复登陆")
+		}
+		opfile.WriteLog("login called by " + username + " with password: " + password)
 	},
 }
 
@@ -35,7 +42,10 @@ func init() {
 	rootCmd.AddCommand(loginCmd)
 
 	// Here you will define your flags and configuration settings.
-	loginCmd.Flags().StringP("user", "u", "Anonymous", "Help message for username")
+	loginCmd.Flags().StringP("user", "u", "", "用户名")
+	loginCmd.MarkFlagRequired("user")
+	loginCmd.Flags().StringP("password", "p", "", "密码")
+	loginCmd.MarkFlagRequired("password")
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// loginCmd.PersistentFlags().String("foo", "", "A help for foo")

@@ -1,10 +1,11 @@
 # 笔记
-
+一点小测试
 ## cobra
 
 - [官方教程](https://github.com/spf13/cobra#getting-started)
 - [中文教程](https://www.cnblogs.com/borey/p/5715641.html)
 - 安装不成功： [clone from github](https://github.com/golang/text)
+- [强制要求参数](https://github.com/spf13/cobra#required-flags)
 
 
 ## JSON
