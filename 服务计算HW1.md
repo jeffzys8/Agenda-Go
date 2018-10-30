@@ -106,6 +106,14 @@
 功能：
 - 检测```curUser.txt```的登陆状态，记录保存并返回提示
 
+## queryu
+
+> 查询已注册用户
+
+## deleteaccount
+
+> 删除用户
+
 ## createm
 
 > 创建会议
