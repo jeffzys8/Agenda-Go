@@ -38,7 +38,7 @@ var loginCmd = &cobra.Command{
 			fmt.Println("已经登陆，无需重复登陆")
 			return
 		}
-		user, exist := entity.Users[username]
+		user, exist := entity.GetUserInfo(username)
 		if !exist {
 			fmt.Println("账户不存在，请核对")
 			opfile.WriteLog("Login: Invalid username: " + username)

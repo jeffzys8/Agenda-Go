@@ -15,6 +15,8 @@
 package cmd
 
 import (
+	"Agenda/entity"
+	"Agenda/opfile"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -23,15 +25,21 @@ import (
 // registerCmd represents the register command
 var registerCmd = &cobra.Command{
 	Use:   "register",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "注册",
+	Long:  `该命令用于注册`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("register called")
+		username, _ := cmd.Flags().GetString("user")
+		password, _ := cmd.Flags().GetString("password")
+		phone, _ := cmd.Flags().GetString("phone")
+		email, _ := cmd.Flags().GetString("email")
+		if _, exist := entity.GetUserInfo(username); exist {
+			fmt.Println("该用户已注册，不可重复注册")
+			opfile.WriteLog("Register: Repetition of registration: " + username)
+			return
+		}
+		entity.CreateUser(username, password, phone, email)
+		fmt.Println("成功注册!")
+		opfile.WriteLog("Register: New successful registration: " + username)
 	},
 }
 
@@ -39,7 +47,14 @@ func init() {
 	rootCmd.AddCommand(registerCmd)
 
 	// Here you will define your flags and configuration settings.
-
+	registerCmd.Flags().StringP("user", "u", "", "用户名")
+	registerCmd.MarkFlagRequired("user")
+	registerCmd.Flags().StringP("password", "p", "", "密码")
+	registerCmd.MarkFlagRequired("password")
+	registerCmd.Flags().StringP("phone", "n", "", "手机")
+	registerCmd.MarkFlagRequired("phone")
+	registerCmd.Flags().StringP("email", "e", "", "邮箱")
+	registerCmd.MarkFlagRequired("email")
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// registerCmd.PersistentFlags().String("foo", "", "A help for foo")
