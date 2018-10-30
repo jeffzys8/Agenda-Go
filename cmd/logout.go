@@ -15,6 +15,7 @@
 package cmd
 
 import (
+	"Agenda/opfile"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -23,15 +24,16 @@ import (
 // logoutCmd represents the logout command
 var logoutCmd = &cobra.Command{
 	Use:   "logout",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "登出",
+	Long:  `该命令用于登出`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("logout called")
+		if username, exist := opfile.GetCurrentUser(); exist {
+			opfile.SetCurrentUser("")
+			opfile.WriteLog("Logout: " + username)
+			fmt.Println("成功登出.")
+		} else {
+			fmt.Println("未登陆，无法登出")
+		}
 	},
 }
 

@@ -15,8 +15,11 @@
 package cmd
 
 import (
-	"fmt"
+	"Agenda/entity"
 	"Agenda/opfile"
+	"fmt"
+	"strings"
+
 	"github.com/spf13/cobra"
 )
 
@@ -24,17 +27,30 @@ import (
 var loginCmd = &cobra.Command{
 	Use:   "login",
 	Short: "登陆",
-	Long: `该命令用于登陆`,
+	Long:  `该命令用于登陆`,
 	Run: func(cmd *cobra.Command, args []string) {
 		username, _ := cmd.Flags().GetString("user")
 		password, _ := cmd.Flags().GetString("password")
-		
+
 		// read the current file
-		_ , exist := opfile.GetCurrentUser()
-		if exist{
+		_, exist := opfile.GetCurrentUser()
+		if exist {
 			fmt.Println("已经登陆，无需重复登陆")
+			return
 		}
-		opfile.WriteLog("login called by " + username + " with password: " + password)
+		user, exist := entity.Users[username]
+		if !exist {
+			fmt.Println("账户不存在，请核对")
+			opfile.WriteLog("Login: Invalid username: " + username)
+			return
+		}
+		if strings.EqualFold(user.Password, password) == false {
+			fmt.Println("密码错误，请核对")
+			opfile.WriteLog("Login: Wrong password: " + username)
+			return
+		}
+		fmt.Println("登陆成功!")
+		opfile.SetCurrentUser(username)
 	},
 }
 

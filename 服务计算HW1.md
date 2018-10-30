@@ -14,11 +14,12 @@
 
 ## User信息
 
-- KEY: id int
-- username string
-- password(md5) string
-- email string
-- phone string
+- KEY: Name string
+- Password string
+- Email string
+- Phone string
+
+数据结构: map, key 为 Name
 
 
 ## Meeting信息
@@ -78,7 +79,6 @@
 - password(-p --password)
 
 功能：
-- 若用户名或密码为空，返回提示信息
 - 若用户已登陆返回提示信息
 - 从```entity/users.txt```文件中读取用户信息，确认登陆并保存状态到```curUser.txt```
 - 若用户名或密码错误，返回提示信息
@@ -90,9 +90,10 @@
 参数列表：
 - 用户名(-u --user)
 - password(-p --password)
+- phone(-ph --phone)
+- email(-e --email)
 
 功能：
-- 若用户名或密码为空，返回提示信息
 - 在```entity/users.txt```中检测用户名是否重复
 - 保存用户信息，自动登陆，保存登陆信息到```curUser.txt```
 

@@ -14,8 +14,18 @@
 
 package main
 
-import "Agenda/cmd"
+import (
+	"Agenda/cmd"
+	"Agenda/entity"
+)
 
 func main() {
+	// load data
+	entity.LoadUsers()
+	entity.LoadMeetings()
+	// execute command(s)
 	cmd.Execute()
+	// save data
+	entity.SaveMeetings()
+	entity.SaveUsers()
 }

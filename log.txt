@@ -1,0 +1,12 @@
+
+[2018-10-30 13:05:52 +0800 CST] login called by jeff with password: 123
+[2018-10-30 13:27:52 +0800 CST] login called by jeff with password: 123
+[2018-10-30 13:31:51 +0800 CST] login called by jeff with password: 123
+[2018-10-30 13:32:38 +0800 CST] login called by jeff with password: 123
+[2018-10-30 13:33:21 +0800 CST] login called by jeff with password: 123
+[2018-10-30 13:34:25 +0800 CST] login called by jeff with password: 123
+[2018-10-30 13:34:51 +0800 CST] login called by jeff with password: 123
+[2018-10-30 13:46:26 +0800 CST] login called by jeff with password: 123
+[2018-10-30 14:13:46 +0800 CST] Logout: jeff
+[2018-10-30 14:14:15 +0800 CST] Login: Wrong password: jeff
+[2018-10-30 14:15:13 +0800 CST] Logout: jeff
