@@ -1,6 +1,8 @@
 # 笔记
 
 - [ ] cmd-entity实现接口模式
+- [ ] 三层模型 cmd-service-data
+- [ ] 归纳 指针 meetings[title] = &MeetingInfo{...}  --> map的value要用指针的原因
 
 ## Go项目库
 
@@ -30,11 +32,13 @@
 
 ## Meeting信息
 
-- KEY: title string
-- creator string //会议发起人
-- attenders []string //会议参与者
-- start_time Time 
-- end_time Time
+- KEY: title string //会议标题
+- creator string    //会议发起人
+- partics []string  //会议参与者
+- start_time int    //使用UNIX时间戳进行记录
+- end_time int      //使用UNIX时间戳进行记录
+
+数据结构：map, key 为 title
 
 ## 持久化要求
 
@@ -74,7 +78,7 @@
 
 参数列表：
 
-- 用户名(-u --user)
+- username(-u --user)
 - password(-p --password)
 
 功能：
@@ -87,7 +91,7 @@
 > 执行注册功能
 
 参数列表：
-- 用户名(-u --user)
+- username(-u --user)
 - password(-p --password)
 - phone(-ph --phone)
 - email(-e --email)
@@ -109,17 +113,58 @@
 
 > 查询已注册用户
 
+参数列表
+
+- username (-u --user)
+
+功能：
+
+- 查询已注册的用户
+- 未登陆无法使用该功能
+
 ## deleteaccount
 
 > 删除用户
+
+参数列表：空
+
+功能：
+- 删除现在登陆的账号
+- 取消所有host的会议（先删参与者，后删会议）
+- 删除所有参与的会议（从会议中删除，并检测会议是否要被删除）
 
 ## createm
 
 > 创建会议
 
+参数列表：
+- 会议标题(-t --title)
+- 开始时间(-s --start)
+- 结束时间(-e --end)
+- 首个参与者(-p --participator)
+
+功能：
+- 以当前用户为发起人创建会议
+- 检测当前用户是否登陆
+- 检测会议是否存在
+- 检测给定时间是否合法
+- 检测开始时间和结束时间是否和发起人现有会议重叠
+- 检测参与者：同adda第4、5条
+
 ## adda
 
 > 增加会议参与者
+
+参数列表：
+- 会议标题(-t --title)
+- 参与用户名(-u --user)
+
+功能：
+- 增加某个会议的参与者
+- 检测会议是否存在
+- 检测操作者是否有权限（是该会议host）
+- 检测输入用户是否存在且合法（不是会议内人员 & 不是用户本身）
+- 检测输入用户是否会议冲突
 
 ## removea
 

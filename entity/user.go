@@ -15,13 +15,13 @@ type UserInfo struct {
 }
 
 // users : Record the data for all users, unaccessable to outside
-var users = make(map[string]UserInfo)
+var users = make(map[string]*UserInfo)
 
-var filename = "entity/users.txt"
+var userfilename = "entity/users.txt"
 
 //LoadUsers : Load the data of users
 func LoadUsers() {
-	userJSON, err := ioutil.ReadFile(filename)
+	userJSON, err := ioutil.ReadFile(userfilename)
 	if err != nil {
 		panic(err)
 	}
@@ -31,22 +31,43 @@ func LoadUsers() {
 	}
 }
 
+//SaveUsers : Save the data of users
+func SaveUsers() {
+	userJSON, _ := json.Marshal(users)
+	err := ioutil.WriteFile(userfilename, userJSON, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
+
 //GetUserInfo : Return a copy of the userinfo of the given username
-func GetUserInfo(username string) (UserInfo, bool) {
+func GetUserInfo(username string) (*UserInfo, bool) {
 	user, exist := users[username]
 	return user, exist
 }
 
 //CreateUser : Create a new user via register
 func CreateUser(name, pass, phone, email string) {
-	users[name] = UserInfo{Password: pass, Phone: phone, Email: email}
+	users[name] = &UserInfo{Password: pass, Phone: phone, Email: email}
 }
 
-//SaveUsers : Save the data of users
-func SaveUsers() {
-	userJSON, _ := json.Marshal(users)
-	err := ioutil.WriteFile(filename, userJSON, 0644)
-	if err != nil {
-		panic(err)
-	}
+//GetUserHostMeetings : Get a list of meetings held by user
+func GetUserHostMeetings(username string) []string {
+	return users[username].HostMeetings
+}
+
+//GetUserParMeetings : Get a list of meetings participated by user
+func GetUserParMeetings(username string) []string {
+	return users[username].ParMeetings
+}
+
+//AddUserMeetingHost :
+func AddUserMeetingHost(username, title string) {
+	users[username].HostMeetings = append(users[username].HostMeetings, title)
+
+}
+
+//AddUserMeetingParc :
+func AddUserMeetingParc(username, title string) {
+	users[username].ParMeetings = append(users[username].ParMeetings, title)
 }

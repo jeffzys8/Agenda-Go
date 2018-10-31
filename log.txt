@@ -1,15 +1,16 @@
-
-[2018-10-30 13:05:52 +0800 CST] login called by jeff with password: 123
-[2018-10-30 13:27:52 +0800 CST] login called by jeff with password: 123
-[2018-10-30 13:31:51 +0800 CST] login called by jeff with password: 123
-[2018-10-30 13:32:38 +0800 CST] login called by jeff with password: 123
-[2018-10-30 13:33:21 +0800 CST] login called by jeff with password: 123
-[2018-10-30 13:34:25 +0800 CST] login called by jeff with password: 123
-[2018-10-30 13:34:51 +0800 CST] login called by jeff with password: 123
-[2018-10-30 13:46:26 +0800 CST] login called by jeff with password: 123
 [2018-10-30 14:13:46 +0800 CST] Logout: jeff
 [2018-10-30 14:14:15 +0800 CST] Login: Wrong password: jeff
 [2018-10-30 14:15:13 +0800 CST] Logout: jeff
 [2018-10-30 14:39:47 +0800 CST] Register: Repetition of registration: jeff
 [2018-10-30 18:06:07 +0800 CST] QueryUser: jeff queried by jeff
 [2018-10-30 18:06:10 +0800 CST] QueryUser: amber queried by jeff
+[2018-10-30 23:49:15 +0800 CST] Logout: jeff
+[2018-10-31 18:00:20 +0800 CST] CreateMeeting: Illegal time. user:jeff
+[2018-10-31 18:18:35 +0800 CST] CreateMeeting: participator not exist. user:jeff
+[2018-10-31 18:23:54 +0800 CST] CreateMeeting: Meeting created [testMeeting] by (jeff)
+[2018-10-31 18:27:15 +0800 CST] CreateMeeting: Same title error.
+[2018-10-31 18:31:07 +0800 CST] CreateMeeting: Meeting created [testMeeting3] by (jeff)
+[2018-10-31 19:32:45 +0800 CST] CreateMeeting: Meeting created [testMeeting3] by (jeff)
+[2018-10-31 19:35:27 +0800 CST] CreateMeeting: Same title error.
+[2018-10-31 19:35:30 +0800 CST] CreateMeeting: Meeting created [testMeeting4] by (jeff)
+[2018-10-31 19:38:43 +0800 CST] CreateMeeting: time overlap. user:jeff
