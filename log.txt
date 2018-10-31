@@ -14,3 +14,10 @@
 [2018-10-31 19:35:27 +0800 CST] CreateMeeting: Same title error.
 [2018-10-31 19:35:30 +0800 CST] CreateMeeting: Meeting created [testMeeting4] by (jeff)
 [2018-10-31 19:38:43 +0800 CST] CreateMeeting: time overlap. user:jeff
+[2018-10-31 20:14:37 +0800 CST] CreateMeeting: time overlap. user:jeff
+[2018-10-31 20:15:12 +0800 CST] AddParticipator: Non-exist meeting. user:jeff
+[2018-10-31 20:15:15 +0800 CST] AddParticipator: Non-exist meeting. user:jeff
+[2018-10-31 20:15:18 +0800 CST] AddParticipator: Invalid participator. user:jeff
+[2018-10-31 20:19:48 +0800 CST] AddParticipator: Participator repetition. user:jeff
+[2018-10-31 20:20:22 +0800 CST] AddParticipator: Participator repetition. user:jeff
+[2018-10-31 20:57:21 +0800 CST] RemoveParticipator: Invalid participator. user:jeff

@@ -3,6 +3,7 @@ package entity
 import (
 	"encoding/json"
 	"io/ioutil"
+	"strings"
 )
 
 // UserInfo : struct for Users infos
@@ -70,4 +71,26 @@ func AddUserMeetingHost(username, title string) {
 //AddUserMeetingParc :
 func AddUserMeetingParc(username, title string) {
 	users[username].ParMeetings = append(users[username].ParMeetings, title)
+}
+
+//UserHasParcMeeting :
+func UserHasParcMeeting(username, title string) (int, bool) {
+	for index, mName := range users[username].ParMeetings {
+		if strings.EqualFold(mName, title) {
+			return index, true
+		}
+	}
+	return -1, false
+}
+
+func RemovePartMeetingFromUser(username, title string) {
+	userInfo, _ := GetUserInfo(username)
+	for i, t := range userInfo.ParMeetings {
+		if strings.EqualFold(title, t) {
+			tempSlice := userInfo.ParMeetings[i+1:]
+			userInfo.ParMeetings = userInfo.ParMeetings[0:i]
+			userInfo.ParMeetings = append(userInfo.ParMeetings, tempSlice...)
+			return
+		}
+	}
 }

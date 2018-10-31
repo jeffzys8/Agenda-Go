@@ -82,3 +82,10 @@ func IsTimeOverlapForUser(username string, startTimeUnix, endTimeUnix int64) (st
 func IsTimeOverlap(s1, e1, s2, e2 int64) bool {
 	return !(e1 <= s2 || e2 <= s1)
 }
+
+func RemoveParticFromMeeting(title string, index int) {
+	meetingInfo, _ := GetMeetingInfo(title)
+	tempsilce := meetingInfo.Partics[index+1:]
+	meetingInfo.Partics = append([]string{}, meetingInfo.Partics[0:index]...)
+	meetingInfo.Partics = append(meetingInfo.Partics, tempsilce...)
+}

@@ -15,7 +15,10 @@
 package cmd
 
 import (
+	"Agenda/entity"
+	"Agenda/opfile"
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -23,15 +26,47 @@ import (
 // removeaCmd represents the removea command
 var removeaCmd = &cobra.Command{
 	Use:   "removea",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "删除会议参与者",
+	Long: `该指令用于删除会议参与者
+	
+	格式: $removea -t [title] -p [participator].`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("removea called")
+		hostname, loginned := opfile.GetCurrentUser()
+		if !loginned {
+			fmt.Println("未登录")
+			return
+		}
+
+		title, _ := cmd.Flags().GetString("title")
+		meetingInfo, meetingExist := entity.GetMeetingInfo(title)
+		if !meetingExist {
+			fmt.Println("该会议不存在.")
+			opfile.WriteLog("RemoveParticipator: Non-exist meeting. user:" + hostname)
+			return
+		}
+		if !strings.EqualFold(meetingInfo.Host, hostname) {
+			fmt.Println("您无该会议的操作权.")
+			opfile.WriteLog("RemoveParticipator: No right to add participators. user:" + hostname)
+			return
+		}
+
+		particName, _ := cmd.Flags().GetString("participator")
+		_, parcExist := entity.GetUserInfo(particName)
+		if !parcExist {
+			fmt.Println("该用户不存在.")
+			opfile.WriteLog("RemoveParticipator: Invalid participator. user:" + hostname)
+			return
+		}
+
+		parIndex, hasPar := entity.UserHasParcMeeting(particName, title)
+		if !hasPar {
+			fmt.Println("该用户不是会议参与者.")
+			opfile.WriteLog("RemoveParticipator: Participator repetition. user:" + hostname)
+			return
+		}
+
+		entity.RemoveParticFromMeeting(title, parIndex)
+		entity.RemovePartMeetingFromUser(particName, title)
 	},
 }
 
@@ -39,7 +74,10 @@ func init() {
 	rootCmd.AddCommand(removeaCmd)
 
 	// Here you will define your flags and configuration settings.
-
+	removeaCmd.Flags().StringP("title", "t", "", "标题")
+	removeaCmd.MarkFlagRequired("title")
+	removeaCmd.Flags().StringP("participator", "p", "", "参与者")
+	removeaCmd.MarkFlagRequired("participator")
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// removeaCmd.PersistentFlags().String("foo", "", "A help for foo")
