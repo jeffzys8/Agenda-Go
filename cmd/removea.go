@@ -58,14 +58,14 @@ var removeaCmd = &cobra.Command{
 			return
 		}
 
-		parIndex, hasPar := entity.UserHasParcMeeting(particName, title)
+		_, hasPar := entity.UserHasParcMeeting(particName, title)
 		if !hasPar {
 			fmt.Println("该用户不是会议参与者.")
 			opfile.WriteLog("RemoveParticipator: Participator repetition. user:" + hostname)
 			return
 		}
 
-		entity.RemoveParticFromMeeting(title, parIndex)
+		entity.RemoveParticFromMeeting(title, particName)
 		entity.RemovePartMeetingFromUser(particName, title)
 	},
 }

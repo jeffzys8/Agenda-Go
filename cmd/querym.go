@@ -15,7 +15,10 @@
 package cmd
 
 import (
+	"Agenda/entity"
+	"Agenda/opfile"
 	"fmt"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -23,15 +26,45 @@ import (
 // querymCmd represents the querym command
 var querymCmd = &cobra.Command{
 	Use:   "querym",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "查询会议",
+	Long: `该指令用于查询某个用户某一时间段的全部会议
+	
+	格式：$querym -s [startTime] -e [endTime]
+	示例：$querym -s [2018-10-1 20:00] -e [2018-10-7 20:00]`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("querym called")
+		username, loginned := opfile.GetCurrentUser()
+		if !loginned {
+			fmt.Println("未登录")
+			return
+		}
+
+		fmt.Println("发起的会议：")
+		userInfo, _ := entity.GetUserInfo(username)
+		for _, title := range userInfo.HostMeetings {
+			meeting, _ := entity.GetMeetingInfo(title)
+			fmt.Println("	标题: " + title)
+			fmt.Println("	开始时间" + time.Unix(meeting.StartTime, 0).String())
+			fmt.Println("	结束时间" + time.Unix(meeting.StartTime, 0).String())
+			fmt.Println("	会议参与者:")
+			for _, v := range meeting.Partics {
+				fmt.Println("		" + v)
+			}
+			fmt.Println("------------------------")
+		}
+
+		fmt.Println("参与的会议：")
+		for _, title := range userInfo.ParMeetings {
+			meeting, _ := entity.GetMeetingInfo(title)
+			fmt.Println("	标题: " + title)
+			fmt.Println("	发起人: " + meeting.Host)
+			fmt.Println("	开始时间" + time.Unix(meeting.StartTime, 0).String())
+			fmt.Println("	结束时间" + time.Unix(meeting.StartTime, 0).String())
+			fmt.Println("	会议参与者:")
+			for _, v := range meeting.Partics {
+				fmt.Println("		" + v)
+			}
+			fmt.Println("------------------------")
+		}
 	},
 }
 
@@ -39,7 +72,10 @@ func init() {
 	rootCmd.AddCommand(querymCmd)
 
 	// Here you will define your flags and configuration settings.
-
+	querymCmd.Flags().StringP("startTime", "s", "", "起始时间")
+	querymCmd.MarkFlagRequired("startTime")
+	querymCmd.Flags().StringP("endTime", "e", "", "结束时间")
+	querymCmd.MarkFlagRequired("endTime")
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// querymCmd.PersistentFlags().String("foo", "", "A help for foo")

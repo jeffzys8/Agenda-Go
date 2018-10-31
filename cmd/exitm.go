@@ -15,7 +15,10 @@
 package cmd
 
 import (
+	"Agenda/entity"
+	"Agenda/opfile"
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -23,15 +26,39 @@ import (
 // exitmCmd represents the exitm command
 var exitmCmd = &cobra.Command{
 	Use:   "exitm",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "退出会议",
+	Long: `该指令用于会议参与者退出会议 - 会议发起者应使用cancelm取消会议
+	
+	格式: $exitm -t [title]`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("exitm called")
+		username, loginned := opfile.GetCurrentUser()
+		if !loginned {
+			fmt.Println("未登录")
+			return
+		}
+
+		title, _ := cmd.Flags().GetString("title")
+		meetingInfo, meetingExist := entity.GetMeetingInfo(title)
+		if !meetingExist {
+			fmt.Println("该会议不存在.")
+			return
+		}
+
+		if strings.EqualFold(meetingInfo.Host, username) {
+			fmt.Println("你是会议发起人，应使用cancelm取消会议")
+			return
+		}
+
+		_, isPart := entity.UserHasParcMeeting(username, title)
+		if !isPart {
+			fmt.Println("你不在会议中")
+			return
+		}
+
+		entity.RemovePartMeetingFromUser(username, title)
+		entity.RemoveParticFromMeeting(title, username)
+		fmt.Println("操作成功")
+		opfile.WriteLog("ExitMeeting: " + username + "exit meeting " + title)
 	},
 }
 
@@ -39,7 +66,8 @@ func init() {
 	rootCmd.AddCommand(exitmCmd)
 
 	// Here you will define your flags and configuration settings.
-
+	exitmCmd.Flags().StringP("title", "t", "", "标题")
+	exitmCmd.MarkFlagRequired("title")
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// exitmCmd.PersistentFlags().String("foo", "", "A help for foo")

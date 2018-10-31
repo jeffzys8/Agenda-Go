@@ -15,7 +15,10 @@
 package cmd
 
 import (
+	"Agenda/entity"
+	"Agenda/opfile"
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -23,15 +26,30 @@ import (
 // cancelmCmd represents the cancelm command
 var cancelmCmd = &cobra.Command{
 	Use:   "cancelm",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "取消会议",
+	Long:  `该指令用于取消某个会议 - 仅发起人可以使用`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("cancelm called")
+		hostname, loginned := opfile.GetCurrentUser()
+		if !loginned {
+			fmt.Println("未登录")
+			return
+		}
+
+		title, _ := cmd.Flags().GetString("title")
+		meetingInfo, meetingExist := entity.GetMeetingInfo(title)
+		if !meetingExist {
+			fmt.Println("该会议不存在.")
+			return
+		}
+		if !strings.EqualFold(meetingInfo.Host, hostname) {
+			fmt.Println("您无该会议的操作权.")
+			return
+		}
+
+		entity.DeleteMeeting(title)
+
+		fmt.Println("操作成功")
+		opfile.WriteLog("CancelMeeting: Meeting [" + title + "] cancelled by " + hostname)
 	},
 }
 
@@ -39,7 +57,8 @@ func init() {
 	rootCmd.AddCommand(cancelmCmd)
 
 	// Here you will define your flags and configuration settings.
-
+	cancelmCmd.Flags().StringP("title", "t", "", "标题")
+	cancelmCmd.MarkFlagRequired("title")
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// cancelmCmd.PersistentFlags().String("foo", "", "A help for foo")

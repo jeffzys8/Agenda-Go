@@ -18,7 +18,7 @@ type UserInfo struct {
 // users : Record the data for all users, unaccessable to outside
 var users = make(map[string]*UserInfo)
 
-var userfilename = "entity/users.txt"
+var userfilename = "entity/users.json"
 
 //LoadUsers : Load the data of users
 func LoadUsers() {
@@ -52,6 +52,11 @@ func CreateUser(name, pass, phone, email string) {
 	users[name] = &UserInfo{Password: pass, Phone: phone, Email: email}
 }
 
+//DeleteUser :
+func DeleteUser(name string) {
+	delete(users, name)
+}
+
 //GetUserHostMeetings : Get a list of meetings held by user
 func GetUserHostMeetings(username string) []string {
 	return users[username].HostMeetings
@@ -83,6 +88,7 @@ func UserHasParcMeeting(username, title string) (int, bool) {
 	return -1, false
 }
 
+//RemovePartMeetingFromUser :
 func RemovePartMeetingFromUser(username, title string) {
 	userInfo, _ := GetUserInfo(username)
 	for i, t := range userInfo.ParMeetings {
@@ -91,6 +97,20 @@ func RemovePartMeetingFromUser(username, title string) {
 			userInfo.ParMeetings = userInfo.ParMeetings[0:i]
 			userInfo.ParMeetings = append(userInfo.ParMeetings, tempSlice...)
 			return
+		}
+	}
+}
+
+//RemoveHostMeetingFromUser :
+func RemoveHostMeetingFromUser(username, title string) {
+	userInfo, _ := GetUserInfo(username)
+	for i, t := range userInfo.HostMeetings {
+		if strings.EqualFold(title, t) {
+			tempSlice := userInfo.HostMeetings[i+1:]
+			userInfo.HostMeetings = userInfo.HostMeetings[0:i]
+			userInfo.HostMeetings = append(userInfo.HostMeetings, tempSlice...)
+
+			break
 		}
 	}
 }

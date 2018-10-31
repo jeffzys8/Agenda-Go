@@ -3,6 +3,7 @@ package entity
 import (
 	"encoding/json"
 	"io/ioutil"
+	"strings"
 	"time"
 )
 
@@ -15,7 +16,7 @@ type MeetingInfo struct {
 }
 
 var meetings = make(map[string]*MeetingInfo)
-var meetingfilename = "entity/meetings.txt"
+var meetingfilename = "entity/meetings.json"
 
 // TimeFormat : output for time specification
 var TimeFormat = "2006-1-2 15:04"
@@ -83,9 +84,37 @@ func IsTimeOverlap(s1, e1, s2, e2 int64) bool {
 	return !(e1 <= s2 || e2 <= s1)
 }
 
-func RemoveParticFromMeeting(title string, index int) {
+//RemoveParticFromMeeting : as it says
+func RemoveParticFromMeeting(title, username string) {
+
 	meetingInfo, _ := GetMeetingInfo(title)
-	tempsilce := meetingInfo.Partics[index+1:]
-	meetingInfo.Partics = append([]string{}, meetingInfo.Partics[0:index]...)
-	meetingInfo.Partics = append(meetingInfo.Partics, tempsilce...)
+	for index, partName := range meetingInfo.Partics {
+		if strings.EqualFold(username, partName) {
+			tempsilce := meetingInfo.Partics[index+1:]
+			meetingInfo.Partics = append([]string{}, meetingInfo.Partics[0:index]...)
+			meetingInfo.Partics = append(meetingInfo.Partics, tempsilce...)
+			RemoveMeetingIfEmpty(title)
+			break
+		}
+	}
+
+}
+
+//RemoveMeetingIfEmpty : remove the meeting both from 'meetings' or from the host list of users if it has no participators
+func RemoveMeetingIfEmpty(title string) {
+	meetingInfo, _ := GetMeetingInfo(title)
+	if len(meetingInfo.Partics) == 0 {
+		RemoveHostMeetingFromUser(meetingInfo.Host, title)
+		delete(meetings, title)
+	}
+}
+
+//DeleteMeeting :
+func DeleteMeeting(title string) {
+	meetingInfo, _ := GetMeetingInfo(title)
+	for _, pName := range meetingInfo.Partics {
+		RemovePartMeetingFromUser(pName, title)
+	}
+	RemoveHostMeetingFromUser(meetingInfo.Host, title)
+	delete(meetings, title)
 }

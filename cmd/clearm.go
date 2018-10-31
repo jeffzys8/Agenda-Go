@@ -15,6 +15,8 @@
 package cmd
 
 import (
+	"Agenda/entity"
+	"Agenda/opfile"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -23,15 +25,24 @@ import (
 // clearmCmd represents the clearm command
 var clearmCmd = &cobra.Command{
 	Use:   "clearm",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "清空会议",
+	Long: `该指令用于清空用户发起的所有会议 - 用户一定是作为发起人
+	
+	格式: $clearm.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("clearm called")
+		hostname, loginned := opfile.GetCurrentUser()
+		if !loginned {
+			fmt.Println("未登录")
+			return
+		}
+
+		userInfo, _ := entity.GetUserInfo(hostname)
+		for _, title := range userInfo.HostMeetings {
+			entity.DeleteMeeting(title)
+		}
+
+		fmt.Println("操作成功")
+		opfile.WriteLog("ClearMeeting: " + hostname)
 	},
 }
 

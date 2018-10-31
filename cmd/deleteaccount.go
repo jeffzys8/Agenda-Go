@@ -15,6 +15,8 @@
 package cmd
 
 import (
+	"Agenda/entity"
+	"Agenda/opfile"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -23,15 +25,30 @@ import (
 // deleteaccountCmd represents the deleteaccount command
 var deleteaccountCmd = &cobra.Command{
 	Use:   "deleteaccount",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "删除账号",
+	Long: `该指令会删除账号
+	
+	格式：$ deleteaccount.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("deleteaccount called")
+		username, loginned := opfile.GetCurrentUser()
+		if !loginned {
+			fmt.Println("未登录")
+			return
+		}
+
+		userInfo, _ := entity.GetUserInfo(username)
+		for _, title := range userInfo.HostMeetings {
+			entity.DeleteMeeting(title)
+		}
+
+		for _, title := range userInfo.ParMeetings {
+			entity.RemoveParticFromMeeting(title, username)
+		}
+
+		entity.DeleteUser(username)
+		fmt.Println("操作成功.")
+		opfile.WriteLog("DeleteAccount: " + username)
+		opfile.SetCurrentUser("")
 	},
 }
 
