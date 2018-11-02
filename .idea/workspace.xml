@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1d87d995-80b8-42be-8748-7f30c7e68a43" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/entity/check_mail.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entity/check_phone.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/entity/password_check.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/adda.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/adda.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/exitm.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/exitm.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/login.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/register.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/check_phone.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/check_phone.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,7 +33,7 @@
       <file leaf-file-name="login.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cmd/login.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
+            <state relative-caret-position="318">
               <caret line="46" column="38" selection-start-line="46" selection-start-column="38" selection-end-line="46" selection-end-column="38" />
             </state>
           </provider>
@@ -51,8 +47,8 @@
       <file leaf-file-name="register.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cmd/register.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
-              <caret line="39" selection-start-line="39" selection-end-line="39" />
+            <state relative-caret-position="449">
+              <caret line="38" column="9" selection-start-line="38" selection-start-column="9" selection-end-line="38" selection-end-column="9" />
               <folding>
                 <element signature="e#618#695#0" expanded="true" />
               </folding>
@@ -63,8 +59,8 @@
       <file leaf-file-name="user.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/entity/user.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="131" column="23" selection-start-line="131" selection-start-column="23" selection-end-line="131" selection-end-column="23" />
+            <state relative-caret-position="188">
+              <caret line="119" column="13" selection-start-line="119" selection-start-column="13" selection-end-line="119" selection-end-column="13" />
               <folding>
                 <element signature="e#16#74#0" expanded="true" />
               </folding>
@@ -75,20 +71,44 @@
       <file leaf-file-name="check_phone.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/entity/check_phone.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="14" selection-start-column="14" selection-end-column="14" />
+            <state relative-caret-position="300">
+              <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+              <folding>
+                <element signature="e#16#36#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="check_mail.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="log.go" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/opfile/log.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="15" selection-start-line="15" selection-end-line="15" />
+              <folding>
+                <element signature="e#16#56#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="check_mail.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/entity/check_mail.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-329">
+            <state relative-caret-position="-787">
               <caret line="1" selection-start-line="1" selection-end-line="1" />
               <folding>
                 <element signature="e#17#85#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="password_check.go" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/entity/password_check.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="795">
+              <caret line="53" column="1" lean-forward="true" selection-start-line="53" selection-start-column="1" selection-end-line="53" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -105,13 +125,6 @@
       <file leaf-file-name="code.go" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/go/src/go-mailer/validate/code.go">
           <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="queryu.go" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cmd/queryu.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-350" />
-          </provider>
         </entry>
       </file>
     </leaf>
@@ -148,12 +161,13 @@
         <option value="$PROJECT_DIR$/cmd/adda.go" />
         <option value="$PROJECT_DIR$/cmd/exitm.go" />
         <option value="$PROJECT_DIR$/cmd/login.go" />
-        <option value="$PROJECT_DIR$/cmd/register.go" />
         <option value="$USER_HOME$/go/src/go-mailer/validate/code_test.go" />
         <option value="$PROJECT_DIR$/go-mailer/validate/token_test.go" />
         <option value="$PROJECT_DIR$/entity/check_mail.go" />
         <option value="$PROJECT_DIR$/entity/user.go" />
         <option value="$PROJECT_DIR$/entity/check_phone.go" />
+        <option value="$PROJECT_DIR$/cmd/register.go" />
+        <option value="$PROJECT_DIR$/entity/password_check.go" />
       </list>
     </option>
   </component>
@@ -377,7 +391,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="4" />
+      <option name="time" value="5" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -428,16 +442,6 @@
           <caret line="19" column="18" selection-start-line="19" selection-start-column="18" selection-end-line="19" selection-end-column="18" />
           <folding>
             <element signature="e#16#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/opfile/log.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-          <folding>
-            <element signature="e#16#56#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -550,25 +554,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cmd/login.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="46" column="38" selection-start-line="46" selection-start-column="38" selection-end-line="46" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cmd/removea.go">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cmd/register.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
-          <folding>
-            <element signature="e#618#695#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/go-mailer/validate/memoryStore.go">
       <provider selected="true" editor-type-id="text-editor">
@@ -589,30 +576,67 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/entity/check_mail.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-787">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+          <folding>
+            <element signature="e#17#85#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/entity/check_phone.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="14" selection-start-column="14" selection-end-column="14" />
+        <state relative-caret-position="300">
+          <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+          <folding>
+            <element signature="e#16#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/opfile/log.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#16#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cmd/login.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="46" column="38" selection-start-line="46" selection-start-column="38" selection-end-line="46" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/entity/user.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="131" column="23" selection-start-line="131" selection-start-column="23" selection-end-line="131" selection-end-column="23" />
+        <state relative-caret-position="188">
+          <caret line="119" column="13" selection-start-line="119" selection-start-column="13" selection-end-line="119" selection-end-column="13" />
           <folding>
             <element signature="e#16#74#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/entity/check_mail.go">
+    <entry file="file://$PROJECT_DIR$/cmd/register.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-329">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        <state relative-caret-position="449">
+          <caret line="38" column="9" selection-start-line="38" selection-start-column="9" selection-end-line="38" selection-end-column="9" />
           <folding>
-            <element signature="e#17#85#0" expanded="true" />
+            <element signature="e#618#695#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entity/password_check.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="795">
+          <caret line="53" column="1" lean-forward="true" selection-start-line="53" selection-start-column="1" selection-end-line="53" selection-end-column="1" />
         </state>
       </provider>
     </entry>
