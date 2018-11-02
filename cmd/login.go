@@ -19,7 +19,7 @@ import (
 	"Agenda/opfile"
 	"fmt"
 	"strings"
-
+	"DES"
 	"github.com/spf13/cobra"
 )
 
@@ -30,9 +30,18 @@ var loginCmd = &cobra.Command{
 	Long:  `该命令用于登陆`,
 	Run: func(cmd *cobra.Command, args []string) {
 		username, _ := cmd.Flags().GetString("user")
-		password, _ := cmd.Flags().GetString("password")
+		_password, _ := cmd.Flags().GetString("password")
 
+		pass, error := DES.TripleDesDecrypt([]byte(_password), []byte("sfe023f_sefiel#fi32lf3e!"))
+		if error != nil {
+			panic(error)
+		}
+		des_password := string(pass[:])
 		// read the current file
+		password, err := DES.TripleDesDecrypt([]byte(des_password), []byte("sfe023f_sefiel#fi32lf3e!"))
+		if err != nil{
+			panic(err)
+		}
 		_, exist := opfile.GetCurrentUser()
 		if exist {
 			fmt.Println("已经登陆，无需重复登陆")
@@ -44,7 +53,7 @@ var loginCmd = &cobra.Command{
 			opfile.WriteLog("Login: Invalid username: " + username)
 			return
 		}
-		if strings.EqualFold(user.Password, password) == false {
+		if strings.EqualFold(user.Password, string(password)) == false {
 			fmt.Println("密码错误，请核对")
 			opfile.WriteLog("Login: Wrong password: " + username)
 			return

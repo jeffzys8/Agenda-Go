@@ -18,7 +18,6 @@ import (
 	"Agenda/entity"
 	"Agenda/opfile"
 	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -27,6 +26,7 @@ var registerCmd = &cobra.Command{
 	Use:   "register",
 	Short: "注册",
 	Long:  `该命令用于注册`,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		username, _ := cmd.Flags().GetString("user")
 		password, _ := cmd.Flags().GetString("password")

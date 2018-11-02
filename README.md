@@ -1,4 +1,4 @@
-# 笔记
+#服务计算开发Agenda
 
 - [ ] cmd-entity实现接口模式
 - [ ] 三层模型 cmd-service-data
@@ -52,13 +52,25 @@
 - 学习使用 io/ioutils 进行文件读写
     - [文档](https://go-zh.org/pkg/io/ioutil/)
     - [教程](https://blog.csdn.net/wangshubo1989/article/details/74777112/)
+- 具体的存储格式如下
+    - 存储用户信息
+```json
+{"jeff":{"Password":"dsjhjkeybdm","Email":"zys@com","Phone":"159","HostMeetings":["test1","test2"],"ParMeetings":[]},"yyh":{"Password":"123","Email":".com","Phone":"110","HostMeetings":null,"ParMeetings":["test1","test2"]}}
+```
+
+     - 存储会议信息
+
+     
+```json
+{"test1":{"StartTime":1541066400,"EndTime":1541073600,"Host":"jeff","Partics":["yyh"]},"test2":{"StartTime":1541073600,"EndTime":1541080800,"Host":"jeff","Partics":["yyh"]}}
+```
 
 ## 目录逻辑 
 
 - cmd：存放命令实现代码
 - entity：存放 users 和 meetings 对象读写与处理逻辑
 - log.txt：使用```log```包记录命令执行
-- curUser.txt: 当前登陆用户的存储（**是否需要加密**）
+- curUser.txt: 当前登陆用户的存储（使用3DES方法进行加密解密）
 
 ## 耦合
 
@@ -100,6 +112,9 @@
 功能：
 - 在```entity/users.txt```中检测用户名是否重复
 - 保存用户信息，自动登陆，保存登陆信息到```curUser.txt```
+- 会通过向邮箱地址发送消息有无回应来检查邮箱地址的合法性
+- 会通过正则表达式判断手机号的正确性
+- 会判断密码的强弱并要求修改密码
 
 ## logout
 
@@ -198,3 +213,11 @@
 ## clearm
 
 > 会议发起者清空所有发起的会议
+
+
+# 项目运行截图
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwtjw5x8jcj30p00cv3yl.jpg)
+
+
+
+
