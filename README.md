@@ -56,9 +56,7 @@
     - 存储用户信息
 ```json
 {"jeff":{"Password":"dsjhjkeybdm","Email":"zys@com","Phone":"159","HostMeetings":["test1","test2"],"ParMeetings":[]},"yyh":{"Password":"123","Email":".com","Phone":"110","HostMeetings":null,"ParMeetings":["test1","test2"]}}
-```
-    - 存储会议信息
-
+``` - 存储会议信息
 ```json
 {"test1":{"StartTime":1541066400,"EndTime":1541073600,"Host":"jeff","Partics":["yyh"]},"test2":{"StartTime":1541073600,"EndTime":1541080800,"Host":"jeff","Partics":["yyh"]}}
 ```
