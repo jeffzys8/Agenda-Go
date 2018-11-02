@@ -19,7 +19,6 @@ import (
 	"Agenda/opfile"
 	"fmt"
 	"strings"
-
 	"github.com/spf13/cobra"
 )
 
@@ -45,7 +44,7 @@ var exitmCmd = &cobra.Command{
 		}
 
 		if strings.EqualFold(meetingInfo.Host, username) {
-			fmt.Println("你是会议发起人，应使用cancelm取消会议")
+			fmt.Println("你是会议发起人，应使用取消会议")
 			return
 		}
 
@@ -69,10 +68,5 @@ func init() {
 	exitmCmd.Flags().StringP("title", "t", "", "标题")
 	exitmCmd.MarkFlagRequired("title")
 	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// exitmCmd.PersistentFlags().String("foo", "", "A help for foo")
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// exitmCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

@@ -37,6 +37,7 @@ var registerCmd = &cobra.Command{
 			opfile.WriteLog("Register: Repetition of registration: " + username)
 			return
 		}
+
 		entity.CreateUser(username, password, phone, email)
 		fmt.Println("成功注册!")
 		opfile.WriteLog("Register: New successful registration: " + username)

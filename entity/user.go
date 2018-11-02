@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"strings"
 	"DES"
+	"fmt"
 )
 
 // UserInfo : struct for Users infos
@@ -124,4 +125,14 @@ func RemoveHostMeetingFromUser(username, title string) {
 func GETKRY() ([]byte) {
 
 	return KEY
+}
+
+//validate email
+func Validata_Email(email string) bool{
+	err := ValidateHost(email)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+	return true
 }

@@ -19,7 +19,6 @@ import (
 	"Agenda/opfile"
 	"fmt"
 	"strings"
-
 	"github.com/spf13/cobra"
 )
 
@@ -88,11 +87,4 @@ func init() {
 	addaCmd.MarkFlagRequired("title")
 	addaCmd.Flags().StringP("participator", "p", "", "参与者")
 	addaCmd.MarkFlagRequired("participator")
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// addaCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// addaCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

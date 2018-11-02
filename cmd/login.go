@@ -36,8 +36,12 @@ var loginCmd = &cobra.Command{
 		if error != nil {
 			panic(error)
 		}
-		password := string(pass[:])
+		des_password := string(pass[:])
 		// read the current file
+		password, err := DES.TripleDesDecrypt([]byte(des_password), []byte("sfe023f_sefiel#fi32lf3e!"))
+		if err != nil{
+			panic(err)
+		}
 		_, exist := opfile.GetCurrentUser()
 		if exist {
 			fmt.Println("已经登陆，无需重复登陆")
@@ -49,7 +53,7 @@ var loginCmd = &cobra.Command{
 			opfile.WriteLog("Login: Invalid username: " + username)
 			return
 		}
-		if strings.EqualFold(user.Password, password) == false {
+		if strings.EqualFold(user.Password, string(password)) == false {
 			fmt.Println("密码错误，请核对")
 			opfile.WriteLog("Login: Wrong password: " + username)
 			return
