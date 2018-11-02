@@ -19,7 +19,7 @@ import (
 	"Agenda/opfile"
 	"fmt"
 	"strings"
-
+	"DES"
 	"github.com/spf13/cobra"
 )
 
@@ -30,8 +30,13 @@ var loginCmd = &cobra.Command{
 	Long:  `该命令用于登陆`,
 	Run: func(cmd *cobra.Command, args []string) {
 		username, _ := cmd.Flags().GetString("user")
-		password, _ := cmd.Flags().GetString("password")
+		_password, _ := cmd.Flags().GetString("password")
 
+		pass, error := DES.TripleDesDecrypt([]byte(_password), []byte("sfe023f_sefiel#fi32lf3e!"))
+		if error != nil {
+			panic(error)
+		}
+		password := string(pass[:])
 		// read the current file
 		_, exist := opfile.GetCurrentUser()
 		if exist {

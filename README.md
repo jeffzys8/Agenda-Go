@@ -1,4 +1,4 @@
-# 笔记
+#服务计算开发Agenda
 
 - [ ] cmd-entity实现接口模式
 - [ ] 三层模型 cmd-service-data
@@ -198,3 +198,24 @@
 ## clearm
 
 > 会议发起者清空所有发起的会议
+
+
+# 项目运行截图
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwtjw5x8jcj30p00cv3yl.jpg)
+
+
+
+​	
+
+
+
+```json
+{"jeff":{"Password":"123","Email":"zys@com","Phone":"159","HostMeetings":["test1","test2"],"ParMeetings":[]},"yyh":{"Password":"123","Email":".com","Phone":"110","HostMeetings":null,"ParMeetings":["test1","test2"]}}
+```
+
+
+
+```json
+{"test1":{"StartTime":1541066400,"EndTime":1541073600,"Host":"jeff","Partics":["yyh"]},"test2":{"StartTime":1541073600,"EndTime":1541080800,"Host":"jeff","Partics":["yyh"]}}
+```
+

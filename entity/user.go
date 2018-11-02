@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"strings"
+	"DES"
 )
 
 // UserInfo : struct for Users infos
@@ -49,6 +50,11 @@ func GetUserInfo(username string) (*UserInfo, bool) {
 
 //CreateUser : Create a new user via register
 func CreateUser(name, pass, phone, email string) {
+	_pass, err := DES.TripleDesEncrypt([]byte("pass"), KEY)
+	if err != nil {
+		panic(err)
+	}
+	pass = string(_pass[:])
 	users[name] = &UserInfo{Password: pass, Phone: phone, Email: email}
 }
 
@@ -113,4 +119,9 @@ func RemoveHostMeetingFromUser(username, title string) {
 			break
 		}
 	}
+}
+
+func GETKRY() ([]byte) {
+
+	return KEY
 }
