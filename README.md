@@ -58,7 +58,7 @@
 - cmd：存放命令实现代码
 - entity：存放 users 和 meetings 对象读写与处理逻辑
 - log.txt：使用```log```包记录命令执行
-- curUser.txt: 当前登陆用户的存储（**是否需要加密**）
+- curUser.txt: 当前登陆用户的存储（使用3DES方法进行加密解密）
 
 ## 耦合
 
@@ -218,4 +218,5 @@
 ```json
 {"test1":{"StartTime":1541066400,"EndTime":1541073600,"Host":"jeff","Partics":["yyh"]},"test2":{"StartTime":1541073600,"EndTime":1541080800,"Host":"jeff","Partics":["yyh"]}}
 ```
+
 
