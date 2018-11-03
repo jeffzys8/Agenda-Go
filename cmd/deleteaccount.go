@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"Agenda/entity"
-	"Agenda/opfile"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -30,7 +29,7 @@ var deleteaccountCmd = &cobra.Command{
 	
 	格式：$ deleteaccount.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		username, loginned := opfile.GetCurrentUser()
+		username, loginned := entity.GetCurrentUser()
 		if !loginned {
 			fmt.Println("未登录")
 			return
@@ -47,8 +46,8 @@ var deleteaccountCmd = &cobra.Command{
 
 		entity.DeleteUser(username)
 		fmt.Println("操作成功.")
-		opfile.WriteLog("DeleteAccount: " + username)
-		opfile.SetCurrentUser("")
+		entity.WriteLog("DeleteAccount: user(" + username + ")")
+		entity.SetCurrentUser("")
 	},
 }
 

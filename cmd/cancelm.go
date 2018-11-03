@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"Agenda/entity"
-	"Agenda/opfile"
 	"fmt"
 	"strings"
 
@@ -29,7 +28,7 @@ var cancelmCmd = &cobra.Command{
 	Short: "取消会议",
 	Long:  `该指令用于取消某个会议 - 仅发起人可以使用`,
 	Run: func(cmd *cobra.Command, args []string) {
-		hostname, loginned := opfile.GetCurrentUser()
+		hostname, loginned := entity.GetCurrentUser()
 		if !loginned {
 			fmt.Println("未登录")
 			return
@@ -49,7 +48,7 @@ var cancelmCmd = &cobra.Command{
 		entity.DeleteMeeting(title)
 
 		fmt.Println("操作成功")
-		opfile.WriteLog("CancelMeeting: Meeting [" + title + "] cancelled by " + hostname)
+		entity.WriteLog("CancelMeeting: Meeting [" + title + "] cancelled by (" + hostname + ")")
 	},
 }
 

@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"Agenda/entity"
-	"Agenda/opfile"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -30,7 +29,7 @@ var queryuCmd = &cobra.Command{
 	
 	示例 $ queryu -u [username]`,
 	Run: func(cmd *cobra.Command, args []string) {
-		curUser, haslogin := opfile.GetCurrentUser()
+		_, haslogin := entity.GetCurrentUser()
 		if !haslogin {
 			fmt.Println("未登录.")
 			return
@@ -46,7 +45,6 @@ var queryuCmd = &cobra.Command{
 		fmt.Println("Name: " + username)
 		fmt.Println("Phone: " + userinfo.Phone)
 		fmt.Println("Email: " + userinfo.Email)
-		opfile.WriteLog("QueryUser: " + username + " queried by " + curUser)
 	},
 }
 

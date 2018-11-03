@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"Agenda/entity"
-	"Agenda/opfile"
 	"fmt"
 	"time"
 
@@ -32,7 +31,7 @@ var querymCmd = &cobra.Command{
 	格式：$querym -s [startTime] -e [endTime]
 	示例：$querym -s [2018-10-1 20:00] -e [2018-10-7 20:00]`,
 	Run: func(cmd *cobra.Command, args []string) {
-		username, loginned := opfile.GetCurrentUser()
+		username, loginned := entity.GetCurrentUser()
 		if !loginned {
 			fmt.Println("未登录")
 			return

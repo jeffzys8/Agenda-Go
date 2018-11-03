@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"Agenda/entity"
-	"Agenda/opfile"
 	"fmt"
 	"strings"
 
@@ -42,7 +41,7 @@ var loginCmd = &cobra.Command{
 		// if err != nil {
 		// 	panic(err)
 		// }
-		_, exist := opfile.GetCurrentUser()
+		_, exist := entity.GetCurrentUser()
 		if exist {
 			fmt.Println("已经登陆，无需重复登陆")
 			return
@@ -50,16 +49,15 @@ var loginCmd = &cobra.Command{
 		user, exist := entity.GetUserInfo(username)
 		if !exist {
 			fmt.Println("账户不存在，请核对")
-			opfile.WriteLog("Login: Invalid username: " + username)
 			return
 		}
 		if strings.EqualFold(user.Password, string(password)) == false {
 			fmt.Println("密码错误，请核对")
-			opfile.WriteLog("Login: Wrong password: " + username)
 			return
 		}
 		fmt.Println("登陆成功!")
-		opfile.SetCurrentUser(username)
+		entity.SetCurrentUser(username)
+		entity.WriteLog("Login: Successful login by (" + username + ")")
 	},
 }
 

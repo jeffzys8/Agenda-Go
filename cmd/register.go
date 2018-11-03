@@ -16,8 +16,8 @@ package cmd
 
 import (
 	"Agenda/entity"
-	"Agenda/opfile"
 	"fmt"
+
 	"github.com/spf13/cobra"
 )
 
@@ -34,12 +34,11 @@ var registerCmd = &cobra.Command{
 		email, _ := cmd.Flags().GetString("email")
 		if _, exist := entity.GetUserInfo(username); exist {
 			fmt.Println("该用户已注册，不可重复注册")
-			opfile.WriteLog("Register: Repetition of registration: " + username)
 			return
 		}
 		entity.CreateUser(username, password, phone, email)
 		fmt.Println("成功注册!")
-		opfile.WriteLog("Register: New successful registration: " + username)
+		entity.WriteLog("Register: Successful registration by (" + username + ")")
 	},
 }
 

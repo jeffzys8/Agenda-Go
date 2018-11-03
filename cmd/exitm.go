@@ -16,9 +16,9 @@ package cmd
 
 import (
 	"Agenda/entity"
-	"Agenda/opfile"
 	"fmt"
 	"strings"
+
 	"github.com/spf13/cobra"
 )
 
@@ -30,7 +30,7 @@ var exitmCmd = &cobra.Command{
 	
 	格式: $exitm -t [title]`,
 	Run: func(cmd *cobra.Command, args []string) {
-		username, loginned := opfile.GetCurrentUser()
+		username, loginned := entity.GetCurrentUser()
 		if !loginned {
 			fmt.Println("未登录")
 			return
@@ -57,7 +57,7 @@ var exitmCmd = &cobra.Command{
 		entity.RemovePartMeetingFromUser(username, title)
 		entity.RemoveParticFromMeeting(title, username)
 		fmt.Println("操作成功")
-		opfile.WriteLog("ExitMeeting: " + username + "exit meeting " + title)
+		entity.WriteLog("ExitMeeting: (" + username + ") exit meeting [" + title + "]")
 	},
 }
 

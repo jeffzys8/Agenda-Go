@@ -15,7 +15,7 @@
 package cmd
 
 import (
-	"Agenda/opfile"
+	"Agenda/entity"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -27,9 +27,9 @@ var logoutCmd = &cobra.Command{
 	Short: "登出",
 	Long:  `该命令用于登出`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if username, exist := opfile.GetCurrentUser(); exist {
-			opfile.SetCurrentUser("")
-			opfile.WriteLog("Logout: " + username)
+		if username, exist := entity.GetCurrentUser(); exist {
+			entity.SetCurrentUser("")
+			entity.WriteLog("Logout: (" + username + ") logout")
 			fmt.Println("成功登出.")
 		} else {
 			fmt.Println("未登陆，无法登出")

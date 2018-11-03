@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"Agenda/entity"
-	"Agenda/opfile"
 	"fmt"
 	"time"
 
@@ -21,7 +20,7 @@ var createmCmd = &cobra.Command{
 	示例: $ createm -t exampleMeeting -s '2018-10-31 17:00' -e '2018-10-31 18:00 -p 'testUser'`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		hostname, loginned := opfile.GetCurrentUser()
+		hostname, loginned := entity.GetCurrentUser()
 		if !loginned {
 			fmt.Println("未登录")
 			return
@@ -30,7 +29,6 @@ var createmCmd = &cobra.Command{
 		title, _ := cmd.Flags().GetString("title")
 		if _, exist := entity.GetMeetingInfo(title); exist {
 			fmt.Println("该会议已存在.")
-			opfile.WriteLog("CreateMeeting: Same title error.")
 			return
 		}
 
@@ -50,14 +48,12 @@ var createmCmd = &cobra.Command{
 
 		if endTimeUnix <= startTimeUnix || startTimeUnix < time.Now().Unix() {
 			fmt.Println("不合法的时间")
-			opfile.WriteLog("CreateMeeting: Illegal time. user:" + hostname)
 			return
 		}
 
 		// 检查是否和host时间重合
 		if meetingName, overlap := entity.IsTimeOverlapForUser(hostname, startTimeUnix, endTimeUnix); overlap {
 			fmt.Println("该时间与您的会议[" + meetingName + "]时间冲突")
-			opfile.WriteLog("CreateMeeting: time overlap. user:" + hostname)
 			return
 		}
 
@@ -66,13 +62,11 @@ var createmCmd = &cobra.Command{
 		_, parExist := entity.GetUserInfo(participatorStr)
 		if !parExist {
 			fmt.Println("输入的用户不存在")
-			opfile.WriteLog("CreateMeeting: participator not exist. user:" + hostname)
 			return
 		}
 		// 检查是否和part时间重合
 		if meetingName, overlap := entity.IsTimeOverlapForUser(participatorStr, startTimeUnix, endTimeUnix); overlap {
 			fmt.Println("该时间与参与者(" + participatorStr + ")的会议[" + meetingName + "]时间冲突")
-			opfile.WriteLog("CreateMeeting: time overlap for participator. user:" + hostname)
 			return
 		}
 
@@ -81,7 +75,7 @@ var createmCmd = &cobra.Command{
 		entity.AddUserMeetingHost(hostname, title)
 		entity.AddUserMeetingParc(participatorStr, title)
 		fmt.Println("创建成功!")
-		opfile.WriteLog("CreateMeeting: Meeting created [" + title + "] by (" + hostname + ")")
+		entity.WriteLog("CreateMeeting: Meeting created [" + title + "] by (" + hostname + ")" + "with initial participator (" + participatorStr + ")")
 	},
 }
 

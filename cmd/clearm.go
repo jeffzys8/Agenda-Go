@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"Agenda/entity"
-	"Agenda/opfile"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -30,7 +29,7 @@ var clearmCmd = &cobra.Command{
 	
 	格式: $clearm.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		hostname, loginned := opfile.GetCurrentUser()
+		hostname, loginned := entity.GetCurrentUser()
 		if !loginned {
 			fmt.Println("未登录")
 			return
@@ -42,7 +41,7 @@ var clearmCmd = &cobra.Command{
 		}
 
 		fmt.Println("操作成功")
-		opfile.WriteLog("ClearMeeting: " + hostname)
+		entity.WriteLog("ClearMeetings: user(" + hostname + ")")
 	},
 }
 

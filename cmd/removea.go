@@ -16,7 +16,6 @@ package cmd
 
 import (
 	"Agenda/entity"
-	"Agenda/opfile"
 	"fmt"
 	"strings"
 
@@ -31,7 +30,7 @@ var removeaCmd = &cobra.Command{
 	
 	格式: $removea -t [title] -p [participator].`,
 	Run: func(cmd *cobra.Command, args []string) {
-		hostname, loginned := opfile.GetCurrentUser()
+		hostname, loginned := entity.GetCurrentUser()
 		if !loginned {
 			fmt.Println("未登录")
 			return
@@ -41,12 +40,10 @@ var removeaCmd = &cobra.Command{
 		meetingInfo, meetingExist := entity.GetMeetingInfo(title)
 		if !meetingExist {
 			fmt.Println("该会议不存在.")
-			opfile.WriteLog("RemoveParticipator: Non-exist meeting. user:" + hostname)
 			return
 		}
 		if !strings.EqualFold(meetingInfo.Host, hostname) {
 			fmt.Println("您无该会议的操作权.")
-			opfile.WriteLog("RemoveParticipator: No right to add participators. user:" + hostname)
 			return
 		}
 
@@ -54,17 +51,16 @@ var removeaCmd = &cobra.Command{
 		_, parcExist := entity.GetUserInfo(particName)
 		if !parcExist {
 			fmt.Println("该用户不存在.")
-			opfile.WriteLog("RemoveParticipator: Invalid participator. user:" + hostname)
 			return
 		}
 
 		_, hasPar := entity.UserHasParcMeeting(particName, title)
 		if !hasPar {
 			fmt.Println("该用户不是会议参与者.")
-			opfile.WriteLog("RemoveParticipator: Participator repetition. user:" + hostname)
 			return
 		}
 
+		entity.WriteLog("RemoveParticipator: host(" + hostname + ") removes participator(" + particName + ") from meeting[" + title + "]")
 		entity.RemoveParticFromMeeting(title, particName)
 		entity.RemovePartMeetingFromUser(particName, title)
 	},

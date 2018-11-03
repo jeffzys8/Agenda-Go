@@ -16,9 +16,9 @@ package cmd
 
 import (
 	"Agenda/entity"
-	"Agenda/opfile"
 	"fmt"
 	"strings"
+
 	"github.com/spf13/cobra"
 )
 
@@ -32,7 +32,7 @@ var addaCmd = &cobra.Command{
 	示例:$ adda -t testMeeting -p testUser`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		hostname, loginned := opfile.GetCurrentUser()
+		hostname, loginned := entity.GetCurrentUser()
 		if !loginned {
 			fmt.Println("未登录")
 			return
@@ -42,12 +42,10 @@ var addaCmd = &cobra.Command{
 		meetingInfo, meetingExist := entity.GetMeetingInfo(title)
 		if !meetingExist {
 			fmt.Println("该会议不存在.")
-			opfile.WriteLog("AddParticipator: Non-exist meeting. user:" + hostname)
 			return
 		}
 		if !strings.EqualFold(meetingInfo.Host, hostname) {
 			fmt.Println("您无该会议的操作权.")
-			opfile.WriteLog("AddParticipator: No right to add participators. user:" + hostname)
 			return
 		}
 
@@ -55,24 +53,21 @@ var addaCmd = &cobra.Command{
 		_, parcExist := entity.GetUserInfo(particName)
 		if !parcExist {
 			fmt.Println("该用户不存在.")
-			opfile.WriteLog("AddParticipator: Invalid participator. user:" + hostname)
 			return
 		}
 
 		if _, hasParc := entity.UserHasParcMeeting(particName, title); hasParc {
 			fmt.Println("该用户已是会议成员.")
-			opfile.WriteLog("AddParticipator: Participator repetition. user:" + hostname)
 			return
 		}
 
 		if _, overlap := entity.IsTimeOverlapForUser(particName, meetingInfo.StartTime, meetingInfo.EndTime); overlap {
 			fmt.Println("该用户时间冲突.")
-			opfile.WriteLog("AddParticipator: Participator time contradict. user:" + hostname)
 			return
 		}
 
 		fmt.Println("操作成功.")
-		opfile.WriteLog("AddParticipator: Added. user:" + hostname)
+		entity.WriteLog("AddParticipator: host(" + hostname + ") adds participator (" + particName + ") to meeting [" + title + "]")
 		meetingInfo.Partics = append(meetingInfo.Partics, particName)
 		entity.AddUserMeetingParc(particName, title)
 
