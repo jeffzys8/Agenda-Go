@@ -15,7 +15,7 @@
 package cmd
 
 import (
-	"Agenda/entity"
+	"Agenda/service"
 	"fmt"
 	"time"
 
@@ -31,38 +31,36 @@ var querymCmd = &cobra.Command{
 	格式：$querym -s [startTime] -e [endTime]
 	示例：$querym -s [2018-10-1 20:00] -e [2018-10-7 20:00]`,
 	Run: func(cmd *cobra.Command, args []string) {
-		username, loginned := entity.GetCurrentUser()
-		if !loginned {
-			fmt.Println("未登录")
-			return
-		}
 
-		fmt.Println("发起的会议：")
-		userInfo, _ := entity.GetUserInfo(username)
-		for _, title := range userInfo.HostMeetings {
-			meeting, _ := entity.GetMeetingInfo(title)
-			fmt.Println("	标题: " + title)
-			fmt.Println("	开始时间" + time.Unix(meeting.StartTime, 0).String())
-			fmt.Println("	结束时间" + time.Unix(meeting.StartTime, 0).String())
-			fmt.Println("	会议参与者:")
-			for _, v := range meeting.Partics {
-				fmt.Println("		" + v)
-			}
-			fmt.Println("------------------------")
+		// 读取参数
+		startTimeStr, _ := cmd.Flags().GetString("startTime")
+		startTime, err := time.Parse(service.TimeFormat(), startTimeStr)
+		if err != nil {
+			panic(err)
 		}
+		startTimeUnix := startTime.Unix()
+		endTimeStr, _ := cmd.Flags().GetString("endTime")
+		endTime, err := time.Parse(service.TimeFormat(), endTimeStr)
+		if err != nil {
+			panic(err)
+		}
+		endTimeUnix := endTime.Unix()
 
-		fmt.Println("参与的会议：")
-		for _, title := range userInfo.ParMeetings {
-			meeting, _ := entity.GetMeetingInfo(title)
-			fmt.Println("	标题: " + title)
-			fmt.Println("	发起人: " + meeting.Host)
-			fmt.Println("	开始时间" + time.Unix(meeting.StartTime, 0).String())
-			fmt.Println("	结束时间" + time.Unix(meeting.StartTime, 0).String())
-			fmt.Println("	会议参与者:")
-			for _, v := range meeting.Partics {
-				fmt.Println("		" + v)
+		//调用服务
+		sucess, errMsg, hosts, partics := service.QueryMeeting(startTimeUnix, endTimeUnix)
+		if !sucess {
+			fmt.Println("操作失败: " + errMsg)
+		} else {
+			fmt.Println("发起的会议：")
+			for _, msg := range hosts {
+				fmt.Print(msg)
+				fmt.Print("---------------------------------------")
 			}
-			fmt.Println("------------------------")
+			fmt.Println("参与的会议：")
+			for _, msg := range partics {
+				fmt.Print(msg)
+				fmt.Print("---------------------------------------")
+			}
 		}
 	},
 }

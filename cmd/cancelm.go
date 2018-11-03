@@ -1,3 +1,5 @@
+package cmd
+
 // Copyright © 2018 NAME HERE <EMAIL ADDRESS>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +14,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package cmd
-
 import (
-	"Agenda/entity"
+	"Agenda/service"
 	"fmt"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -26,29 +25,21 @@ import (
 var cancelmCmd = &cobra.Command{
 	Use:   "cancelm",
 	Short: "取消会议",
-	Long:  `该指令用于取消某个会议 - 仅发起人可以使用`,
+	Long: `该指令用于取消某个会议 - 仅发起人可以使用
+	
+	格式: $cancelm -t [title]`,
 	Run: func(cmd *cobra.Command, args []string) {
-		hostname, loginned := entity.GetCurrentUser()
-		if !loginned {
-			fmt.Println("未登录")
-			return
-		}
 
+		// 读取参数
 		title, _ := cmd.Flags().GetString("title")
-		meetingInfo, meetingExist := entity.GetMeetingInfo(title)
-		if !meetingExist {
-			fmt.Println("该会议不存在.")
-			return
-		}
-		if !strings.EqualFold(meetingInfo.Host, hostname) {
-			fmt.Println("您无该会议的操作权.")
-			return
-		}
 
-		entity.DeleteMeeting(title)
-
-		fmt.Println("操作成功")
-		entity.WriteLog("CancelMeeting: Meeting [" + title + "] cancelled by (" + hostname + ")")
+		// 执行服务
+		success, errorMsg := service.CancelMeeting(title)
+		if success {
+			fmt.Println("操作成功.")
+		} else {
+			fmt.Println("操作失败: " + errorMsg)
+		}
 	},
 }
 

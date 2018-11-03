@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"Agenda/entity"
+	"Agenda/service"
 	"fmt"
 	"time"
 
@@ -20,62 +20,29 @@ var createmCmd = &cobra.Command{
 	示例: $ createm -t exampleMeeting -s '2018-10-31 17:00' -e '2018-10-31 18:00 -p 'testUser'`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		hostname, loginned := entity.GetCurrentUser()
-		if !loginned {
-			fmt.Println("未登录")
-			return
-		}
-
+		// 读取参数
 		title, _ := cmd.Flags().GetString("title")
-		if _, exist := entity.GetMeetingInfo(title); exist {
-			fmt.Println("该会议已存在.")
-			return
-		}
-
 		startTimeStr, _ := cmd.Flags().GetString("startTime")
-		startTime, err := time.Parse(entity.TimeFormat, startTimeStr)
+		startTime, err := time.Parse(service.TimeFormat(), startTimeStr)
 		if err != nil {
 			panic(err)
 		}
 		startTimeUnix := startTime.Unix()
-
 		endTimeStr, _ := cmd.Flags().GetString("endTime")
-		endTime, err := time.Parse(entity.TimeFormat, endTimeStr)
+		endTime, err := time.Parse(service.TimeFormat(), endTimeStr)
 		if err != nil {
 			panic(err)
 		}
 		endTimeUnix := endTime.Unix()
-
-		if endTimeUnix <= startTimeUnix || startTimeUnix < time.Now().Unix() {
-			fmt.Println("不合法的时间")
-			return
-		}
-
-		// 检查是否和host时间重合
-		if meetingName, overlap := entity.IsTimeOverlapForUser(hostname, startTimeUnix, endTimeUnix); overlap {
-			fmt.Println("该时间与您的会议[" + meetingName + "]时间冲突")
-			return
-		}
-
-		// 检查part是否存在
 		participatorStr, _ := cmd.Flags().GetString("participator")
-		_, parExist := entity.GetUserInfo(participatorStr)
-		if !parExist {
-			fmt.Println("输入的用户不存在")
-			return
-		}
-		// 检查是否和part时间重合
-		if meetingName, overlap := entity.IsTimeOverlapForUser(participatorStr, startTimeUnix, endTimeUnix); overlap {
-			fmt.Println("该时间与参与者(" + participatorStr + ")的会议[" + meetingName + "]时间冲突")
-			return
-		}
 
-		// 创建会议
-		entity.CreateMeeting(title, startTimeUnix, endTimeUnix, hostname, participatorStr)
-		entity.AddUserMeetingHost(hostname, title)
-		entity.AddUserMeetingParc(participatorStr, title)
-		fmt.Println("创建成功!")
-		entity.WriteLog("CreateMeeting: Meeting created [" + title + "] by (" + hostname + ")" + "with initial participator (" + participatorStr + ")")
+		// 调用服务
+		success, errorMsg := service.CreateMeating(title, startTimeUnix, endTimeUnix, participatorStr)
+		if success {
+			fmt.Println("操作成功.")
+		} else {
+			fmt.Println("操作失败: " + errorMsg)
+		}
 	},
 }
 

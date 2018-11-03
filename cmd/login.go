@@ -15,9 +15,8 @@
 package cmd
 
 import (
-	"Agenda/entity"
+	"Agenda/service"
 	"fmt"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -28,36 +27,19 @@ var loginCmd = &cobra.Command{
 	Short: "登陆",
 	Long:  `该命令用于登陆`,
 	Run: func(cmd *cobra.Command, args []string) {
+
+		// 读取参数
 		username, _ := cmd.Flags().GetString("user")
 		password, _ := cmd.Flags().GetString("password")
 
-		// pass, error := DES.TripleDesDecrypt([]byte(_password), []byte("sfe023f_sefiel#fi32lf3e!"))
-		// if error != nil {
-		// 	panic(error)
-		// }
-		// desPassword := string(pass[:])
-		// read the current file
-		// password, err := DES.TripleDesDecrypt([]byte(desPassword), []byte("sfe023f_sefiel#fi32lf3e!"))
-		// if err != nil {
-		// 	panic(err)
-		// }
-		_, exist := entity.GetCurrentUser()
-		if exist {
-			fmt.Println("已经登陆，无需重复登陆")
-			return
+		// 调用服务
+		success, errorMsg := service.Login(username, password)
+
+		if success {
+			fmt.Println("登陆成功.")
+		} else {
+			fmt.Println("登陆失败: " + errorMsg)
 		}
-		user, exist := entity.GetUserInfo(username)
-		if !exist {
-			fmt.Println("账户不存在，请核对")
-			return
-		}
-		if strings.EqualFold(user.Password, string(password)) == false {
-			fmt.Println("密码错误，请核对")
-			return
-		}
-		fmt.Println("登陆成功!")
-		entity.SetCurrentUser(username)
-		entity.WriteLog("Login: Successful login by (" + username + ")")
 	},
 }
 

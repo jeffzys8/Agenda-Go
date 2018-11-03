@@ -15,9 +15,8 @@
 package cmd
 
 import (
-	"Agenda/entity"
+	"Agenda/service"
 	"fmt"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -30,39 +29,20 @@ var removeaCmd = &cobra.Command{
 	
 	格式: $removea -t [title] -p [participator].`,
 	Run: func(cmd *cobra.Command, args []string) {
-		hostname, loginned := entity.GetCurrentUser()
-		if !loginned {
-			fmt.Println("未登录")
-			return
-		}
 
+		//读取参数
 		title, _ := cmd.Flags().GetString("title")
-		meetingInfo, meetingExist := entity.GetMeetingInfo(title)
-		if !meetingExist {
-			fmt.Println("该会议不存在.")
-			return
-		}
-		if !strings.EqualFold(meetingInfo.Host, hostname) {
-			fmt.Println("您无该会议的操作权.")
-			return
-		}
-
 		particName, _ := cmd.Flags().GetString("participator")
-		_, parcExist := entity.GetUserInfo(particName)
-		if !parcExist {
-			fmt.Println("该用户不存在.")
-			return
+
+		//调用服务
+		success, errorMsg := service.RemoveParticipator(title, particName)
+
+		if success {
+			fmt.Println("操作成功.")
+		} else {
+			fmt.Println("操作失败: " + errorMsg)
 		}
 
-		_, hasPar := entity.UserHasParcMeeting(particName, title)
-		if !hasPar {
-			fmt.Println("该用户不是会议参与者.")
-			return
-		}
-
-		entity.WriteLog("RemoveParticipator: host(" + hostname + ") removes participator(" + particName + ") from meeting[" + title + "]")
-		entity.RemoveParticFromMeeting(title, particName)
-		entity.RemovePartMeetingFromUser(particName, title)
 	},
 }
 

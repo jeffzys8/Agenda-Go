@@ -15,7 +15,7 @@
 package cmd
 
 import (
-	"Agenda/entity"
+	"Agenda/service"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -25,29 +25,20 @@ import (
 var deleteaccountCmd = &cobra.Command{
 	Use:   "deleteaccount",
 	Short: "删除账号",
-	Long: `该指令会删除账号
+	Long: `该指令用删除账号以及相关的会议信息
 	
 	格式：$ deleteaccount.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		username, loginned := entity.GetCurrentUser()
-		if !loginned {
-			fmt.Println("未登录")
-			return
-		}
 
-		userInfo, _ := entity.GetUserInfo(username)
-		for _, title := range userInfo.HostMeetings {
-			entity.DeleteMeeting(title)
-		}
+		// 无参数
 
-		for _, title := range userInfo.ParMeetings {
-			entity.RemoveParticFromMeeting(title, username)
+		// 调用服务
+		success, errMsg := service.DeleteAccount()
+		if success {
+			fmt.Println("操作成功.")
+		} else {
+			fmt.Println("操作失败: " + errMsg)
 		}
-
-		entity.DeleteUser(username)
-		fmt.Println("操作成功.")
-		entity.WriteLog("DeleteAccount: user(" + username + ")")
-		entity.SetCurrentUser("")
 	},
 }
 

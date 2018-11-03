@@ -15,9 +15,8 @@
 package cmd
 
 import (
-	"Agenda/entity"
+	"Agenda/service"
 	"fmt"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -30,34 +29,17 @@ var exitmCmd = &cobra.Command{
 	
 	格式: $exitm -t [title]`,
 	Run: func(cmd *cobra.Command, args []string) {
-		username, loginned := entity.GetCurrentUser()
-		if !loginned {
-			fmt.Println("未登录")
-			return
-		}
 
+		// 读取参数
 		title, _ := cmd.Flags().GetString("title")
-		meetingInfo, meetingExist := entity.GetMeetingInfo(title)
-		if !meetingExist {
-			fmt.Println("该会议不存在.")
-			return
-		}
 
-		if strings.EqualFold(meetingInfo.Host, username) {
-			fmt.Println("你是会议发起人，应使用取消会议")
-			return
+		// 调用服务
+		success, errMsg := service.ExitMeeting(title)
+		if success {
+			fmt.Println("操作成功.")
+		} else {
+			fmt.Println("操作失败: " + errMsg)
 		}
-
-		_, isPart := entity.UserHasParcMeeting(username, title)
-		if !isPart {
-			fmt.Println("你不在会议中")
-			return
-		}
-
-		entity.RemovePartMeetingFromUser(username, title)
-		entity.RemoveParticFromMeeting(title, username)
-		fmt.Println("操作成功")
-		entity.WriteLog("ExitMeeting: (" + username + ") exit meeting [" + title + "]")
 	},
 }
 

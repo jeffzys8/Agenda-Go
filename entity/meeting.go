@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"strings"
-	"time"
 )
 
 //MeetingInfo :
@@ -15,13 +14,21 @@ type MeetingInfo struct {
 	Partics   []string
 }
 
+/*
+users : Record the data for all meetings, unaccessable to outside
+	- exclusive, not accessable to other packages
+	- username(string) as key
+*/
 var meetings = make(map[string]*MeetingInfo)
+
+/*
+meetingfilename : the file path to store meetings.json
+*/
 var meetingfilename = "entity/meetings.json"
 
-// TimeFormat : output for time specification
-var TimeFormat = "2006-1-2 15:04"
-
-//LoadMeetings : load the data of meetings
+/*
+LoadMeetings : Load meetings from 'meetings.json'
+*/
 func LoadMeetings() {
 	meetingJSON, err := ioutil.ReadFile(meetingfilename)
 	if err != nil {
@@ -33,7 +40,9 @@ func LoadMeetings() {
 	}
 }
 
-//SaveMeetings : save the data of meetings
+/*
+SaveMeetings : Save meetings to 'meetings.json'
+*/
 func SaveMeetings() {
 
 	meetingJSON, jsonerr := json.Marshal(meetings)
@@ -46,75 +55,75 @@ func SaveMeetings() {
 	}
 }
 
-//GetTimeFromUnix : convert a unix(Int64) syntax time to a Time object
-func GetTimeFromUnix(unix int64) time.Time {
-	return time.Unix(unix, 0)
-}
-
-//GetMeetingInfo : get the info of a specific meeting
-func GetMeetingInfo(title string) (*MeetingInfo, bool) {
+/*
+GetMeetingInfo : Get the info of a specific meeting
+	- return a copy, therefore outside package won't be able to modify data
+*/
+func GetMeetingInfo(title string) (MeetingInfo, bool) {
 	info, ok := meetings[title]
-	return info, ok
+	copy := *info
+	return copy, ok
 }
 
-//CreateMeeting : create a meeting
-func CreateMeeting(title string, startTime, endTime int64, host, partic string) {
-	meetings[title] = &MeetingInfo{StartTime: startTime, EndTime: endTime, Host: host, Partics: []string{partic}}
-}
-
-//IsTimeOverlapForUser : check whether a duration is illegal for a user
-func IsTimeOverlapForUser(username string, startTimeUnix, endTimeUnix int64) (string, bool) {
-	for _, hostMeetingStr := range GetUserHostMeetings(username) {
-		meeting, _ := GetMeetingInfo(hostMeetingStr)
-		if IsTimeOverlap(startTimeUnix, endTimeUnix, meeting.StartTime, meeting.EndTime) {
-			return hostMeetingStr, true
-		}
+/*
+MeetingAddPartic : Add a participator to a meeting
+*/
+func MeetingAddPartic(title, particName string) {
+	meetingInfo, mExist := GetMeetingInfo(title)
+	if !mExist {
+		panic(mExist)
 	}
-	for _, parMeetingStr := range GetUserHostMeetings(username) {
-		meeting, _ := GetMeetingInfo(parMeetingStr)
-		if IsTimeOverlap(startTimeUnix, endTimeUnix, meeting.StartTime, meeting.EndTime) {
-			return parMeetingStr, true
-		}
+	if _, uExist := GetUserInfo(particName); !uExist {
+		panic(uExist)
 	}
-	return "", false
+	meetingInfo.Partics = append(meetingInfo.Partics, particName)
 }
 
-//IsTimeOverlap : check whether two given time overlap
-func IsTimeOverlap(s1, e1, s2, e2 int64) bool {
-	return !(e1 <= s2 || e2 <= s1)
-}
-
-//RemoveParticFromMeeting : as it says
-func RemoveParticFromMeeting(title, username string) {
-
-	meetingInfo, _ := GetMeetingInfo(title)
-	for index, partName := range meetingInfo.Partics {
-		if strings.EqualFold(username, partName) {
-			tempsilce := meetingInfo.Partics[index+1:]
-			meetingInfo.Partics = append([]string{}, meetingInfo.Partics[0:index]...)
-			meetingInfo.Partics = append(meetingInfo.Partics, tempsilce...)
-			RemoveMeetingIfEmpty(title)
+/*
+MeetingRemovePartic : Remove a participator from a meeting
+*/
+func MeetingRemovePartic(title, particName string) {
+	meetingInfo, mExist := GetMeetingInfo(title)
+	if !mExist {
+		panic(mExist)
+	}
+	for index, tempName := range meetingInfo.Partics {
+		if strings.EqualFold(particName, tempName) {
+			meetingInfo.Partics = append(meetingInfo.Partics[0:index], meetingInfo.Partics[index+1:]...)
+			UserRemoveParticMeeting(tempName, title)
+			if len(meetingInfo.Partics) == 0 {
+				MeetingDelete(title)
+			}
 			break
 		}
 	}
-
 }
 
-//RemoveMeetingIfEmpty : remove the meeting both from 'meetings' or from the host list of users if it has no participators
-func RemoveMeetingIfEmpty(title string) {
-	meetingInfo, _ := GetMeetingInfo(title)
-	if len(meetingInfo.Partics) == 0 {
-		RemoveHostMeetingFromUser(meetingInfo.Host, title)
-		delete(meetings, title)
+/*
+MeetingDelete : Delete a meeting
+*/
+func MeetingDelete(title string) {
+
+	meetingInfo, exist := meetings[title]
+	if !exist {
+		panic(exist)
 	}
-}
-
-//DeleteMeeting :
-func DeleteMeeting(title string) {
-	meetingInfo, _ := GetMeetingInfo(title)
+	// 删除 users 中对该 Meeting的引用
 	for _, pName := range meetingInfo.Partics {
-		RemovePartMeetingFromUser(pName, title)
+		UserRemoveParticMeeting(pName, title)
 	}
-	RemoveHostMeetingFromUser(meetingInfo.Host, title)
+	UserRemoveHostMeeting(meetingInfo.Host, title)
 	delete(meetings, title)
+}
+
+/*
+MeetingCreate : Create a meeting
+*/
+func MeetingCreate(title string, startTime, endTime int64, hostName, particName string) {
+	if _, exist := meetings[title]; exist {
+		panic(exist)
+	}
+	meetings[title] = &MeetingInfo{StartTime: startTime, EndTime: endTime, Host: hostName, Partics: []string{particName}}
+	UserAddHostMeeting(hostName, title)
+	UserAddParticMeeting(particName, title)
 }

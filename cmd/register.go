@@ -15,7 +15,7 @@
 package cmd
 
 import (
-	"Agenda/entity"
+	"Agenda/service"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -28,17 +28,20 @@ var registerCmd = &cobra.Command{
 	Long:  `该命令用于注册`,
 
 	Run: func(cmd *cobra.Command, args []string) {
+
+		// 读取参数
 		username, _ := cmd.Flags().GetString("user")
 		password, _ := cmd.Flags().GetString("password")
 		phone, _ := cmd.Flags().GetString("phone")
 		email, _ := cmd.Flags().GetString("email")
-		if _, exist := entity.GetUserInfo(username); exist {
-			fmt.Println("该用户已注册，不可重复注册")
-			return
+
+		// 调用服务
+		success, err := service.Register(username, password, phone, email)
+		if success {
+			fmt.Println("注册成功，请登录.")
+		} else {
+			fmt.Println("操作失败: " + err)
 		}
-		entity.CreateUser(username, password, phone, email)
-		fmt.Println("成功注册!")
-		entity.WriteLog("Register: Successful registration by (" + username + ")")
 	},
 }
 

@@ -1,9 +1,6 @@
-#服务计算开发Agenda
+# 服务计算开发Agenda
 
-- [ ] cmd-entity实现接口模式
-- [ ] 三层模型 cmd-service-data
-- [ ] 归纳 指针 meetings[title] = &MeetingInfo{...}  --> map的value要用指针的原因
-- [ ] append ...操作
+# 笔记
 
 ## Go项目库
 
@@ -20,6 +17,25 @@
 ## JSON
 
 - [参考教程](https://blog.go-zh.org/json-and-go)
+
+# 项目结构
+
+项目实现**三层模型** - cmd命令层、service服务层、entity数据层；
+
+- cmd：命令层使用cobra实现命令，具体可见命令与参数设计部分
+- service: 服务层由命令层调用，处理指令对应的业务逻辑，并调用entity层的接口发出数据处理的请求 
+- entity：存放数据对象以及数据处理业务
+    - 用户信息: 存放在users.json, 由user.go管理，具体数据结构可见于下方 "数据结构-User信息"
+    - 会议信息：存放在meetings.json, 由meeting.go管理，具体数据结构可见于下方 "数据结构-Meeting信息"
+    - 当前登陆用户：存放在curUser.txt, 由curUser.go管理
+    - 日志：存放在log.txt，由log.go管理
+
+
+> 项目对代码进行了规范，符合Google风格的编码
+
+> 3DES 加密方法正在调试，暂未加入
+
+# 数据结构
 
 ## User信息
 
@@ -41,7 +57,6 @@
 
 数据结构：map, key 为 title
 
-## 持久化要求
 
 ```
 持久化要求：
@@ -54,29 +69,13 @@
     - [教程](https://blog.csdn.net/wangshubo1989/article/details/74777112/)
 - 具体的存储格式如下
     - 存储用户信息
-```json
-{"jeff":{"Password":"dsjhjkeybdm","Email":"zys@com","Phone":"159","HostMeetings":["test1","test2"],"ParMeetings":[]},"yyh":{"Password":"123","Email":".com","Phone":"110","HostMeetings":null,"ParMeetings":["test1","test2"]}}
-```
-
-     - 存储会议信息
-
-     
-```json
-{"test1":{"StartTime":1541066400,"EndTime":1541073600,"Host":"jeff","Partics":["yyh"]},"test2":{"StartTime":1541073600,"EndTime":1541080800,"Host":"jeff","Partics":["yyh"]}}
-```
-
-## 目录逻辑 
-
-- cmd：存放命令实现代码
-- entity：存放 users 和 meetings 对象读写与处理逻辑
-- log.txt：使用```log```包记录命令执行
-- curUser.txt: 当前登陆用户的存储（使用3DES方法进行加密解密）
-
-## 耦合
-
-还是需要具有耦合性的记录，以便于增删的操作
-- 在Meeting里记录参与者
-- 在User里记录参与的会议
+    ```json
+    {"jeff":{"Password":"dsjhjkeybdm","Email":"zys@com","Phone":"159","HostMeetings":["test1","test2"],"ParMeetings":[]},"yyh":{"Password":"123","Email":".com","Phone":"110","HostMeetings":null,"ParMeetings":["test1","test2"]}}
+    ```
+    - 存储会议信息     
+    ```json
+    {"test1":{"StartTime":1541066400,"EndTime":1541073600,"Host":"jeff","Partics":["yyh"]},"test2":{"StartTime":1541073600,"EndTime":1541080800,"Host":"jeff","Partics":["yyh"]}}
+    ```
 
 
 # 命令与参数设计

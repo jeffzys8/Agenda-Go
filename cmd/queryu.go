@@ -15,7 +15,7 @@
 package cmd
 
 import (
-	"Agenda/entity"
+	"Agenda/service"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -29,22 +29,15 @@ var queryuCmd = &cobra.Command{
 	
 	示例 $ queryu -u [username]`,
 	Run: func(cmd *cobra.Command, args []string) {
-		_, haslogin := entity.GetCurrentUser()
-		if !haslogin {
-			fmt.Println("未登录.")
-			return
-		}
 		username, _ := cmd.Flags().GetString("user")
-		userinfo, exist := entity.GetUserInfo(username)
-		if !exist {
-			fmt.Println("查无此用户")
-			return
-		}
 
-		fmt.Println("-------------------------")
-		fmt.Println("Name: " + username)
-		fmt.Println("Phone: " + userinfo.Phone)
-		fmt.Println("Email: " + userinfo.Email)
+		success, err, userInfo := service.QueryUser(username)
+		if success {
+			fmt.Println("查询成功.")
+			fmt.Print(userInfo)
+		} else {
+			fmt.Println("操作失败: " + err)
+		}
 	},
 }
 
