@@ -1,14 +1,12 @@
 package DES
 
 import (
-	"fmt"
-	"encoding/base64"
-	"crypto/des"
-	"crypto/cipher"
 	"bytes"
+	"crypto/cipher"
+	"crypto/des"
+	"encoding/base64"
+	"fmt"
 )
-
-
 
 func testDes() {
 	key := []byte("sfe023f_")
@@ -78,6 +76,7 @@ func TripleDesEncrypt(origData, key []byte) ([]byte, error) {
 	blockMode := cipher.NewCBCEncrypter(block, key[:8])
 	crypted := make([]byte, len(origData))
 	blockMode.CryptBlocks(crypted, origData)
+	fmt.Println("是这里的问题")
 	return crypted, nil
 }
 
@@ -103,7 +102,7 @@ func ZeroPadding(ciphertext []byte, blockSize int) []byte {
 }
 
 func ZeroUnPadding(origData []byte) []byte {
-	return bytes.TrimRightFunc(origData, func(r rune) bool{
+	return bytes.TrimRightFunc(origData, func(r rune) bool {
 		return r == rune(0)
 	})
 }
